@@ -39,4 +39,43 @@ petsRoutes.get("/", async (req, res) => {
   }
 });
 
+petsRoutes.post("/", async (req, res) => {
+  const { name, age, type, breed, size, description, available } = req.body;
+
+  if (!validTypes.includes(type.toString())) {
+    return res
+      .status(400)
+      .send({ message: "Invalid type. Try 'dog', 'cat' or 'other'" });
+  }
+
+  if (!validSizes.includes(size.toString())) {
+    return res
+      .status(400)
+      .send({ message: "Invalid size. Try 'small', 'medium' or 'large'" });
+  }
+
+  if (typeof available === "string") {
+    return res.status(400).send({ message: "Invalid type data" });
+  }
+
+  try {
+    await prisma.pet.create({
+      data: {
+        name,
+        age,
+        type,
+        breed,
+        size,
+        description,
+        available,
+      },
+    });
+
+    res.status(201).send();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return res.status(500).send({ message: "Internal server error" });
+  }
+});
+
 export default petsRoutes;
