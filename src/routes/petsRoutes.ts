@@ -43,9 +43,7 @@ petsRoutes.post("/", async (req, res) => {
   const { name, age, type, breed, size, description, available } = req.body;
 
   if (!validTypes.includes(type.toString())) {
-    return res
-      .status(400)
-      .send({ message: "Invalid type. Try 'dog', 'cat' or 'other'" });
+    return res.status(400).send({ message: "Invalid type. Try 'dog', 'cat' or 'other'" });
   }
 
   if (!validSizes.includes(size.toString())) {
@@ -72,6 +70,27 @@ petsRoutes.post("/", async (req, res) => {
     });
 
     res.status(201).send();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return res.status(500).send({ message: "Internal server error" });
+  }
+});
+
+petsRoutes.get("/:id", async (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    const pet = await prisma.pet.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!pet) {
+      return res.status(404).send({ message: "Pet not found" });
+    }
+
+    res.json(pet);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return res.status(500).send({ message: "Internal server error" });
