@@ -147,4 +147,31 @@ petsRoutes.put("/:id", async (req, res) => {
   }
 });
 
+petsRoutes.delete("/:id", async (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    const pet = await prisma.pet.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!pet) {
+      return res.status(404).send({ message: "Pet not found" });
+    }
+
+    await prisma.pet.delete({
+      where: {
+        id,
+      },
+    });
+
+    res.status(200).send();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return res.status(500).send({ message: "Internal server error" });
+  }
+});
+
 export default petsRoutes;
