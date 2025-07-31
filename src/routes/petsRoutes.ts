@@ -97,4 +97,54 @@ petsRoutes.get("/:id", async (req, res) => {
   }
 });
 
+petsRoutes.put("/:id", async (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    const pet = await prisma.pet.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!pet) {
+      return res.status(404).send({ message: "Pet not found" });
+    }
+
+    const data = { ...req.body };
+
+    if (data.type && !validTypes.includes(data.type.toString())) {
+      return res
+        .status(400)
+        .send({ message: "Invalid type. Try 'dog', 'cat' or 'other'" });
+    }
+
+    if (data.size && !validSizes.includes(data.size.toString())) {
+      return res
+        .status(400)
+        .send({ message: "Invalid size. Try 'small', 'medium' or 'large'" });
+    }
+
+    if (data.available && typeof data.available === "string") {
+      if (data.available === "true") {
+        data.available = true;
+      } else if (data.available === "false") {
+        data.available = false;
+      }
+    }
+
+    await prisma.pet.update({
+      where: {
+        id,
+      },
+      data,
+    });
+
+    res.status(200).send();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return res.status(500).send({ message: "Internal server error" });
+  }
+});
+
 export default petsRoutes;
