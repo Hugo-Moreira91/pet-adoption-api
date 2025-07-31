@@ -40,7 +40,7 @@ adoptersRoutes.post(
         },
       });
 
-      res.status(200).send();
+      res.status(201).send();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return res.status(500).send({ message: "Internal server error" });
@@ -59,6 +59,23 @@ adoptersRoutes.get("/:id", checkAdopterId, async (req, res) => {
     });
 
     res.json(adopter);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return res.status(500).send({ message: "Internal server error" });
+  }
+});
+
+adoptersRoutes.delete("/:id", checkAdopterId, async (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    await prisma.adopter.delete({
+      where: {
+        id,
+      },
+    });
+
+    res.status(200).send();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return res.status(500).send({ message: "Internal server error" });
