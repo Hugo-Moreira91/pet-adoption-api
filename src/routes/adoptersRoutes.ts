@@ -3,6 +3,7 @@ import { PrismaClient } from "../generated/prisma";
 import validateAdopterName from "../middlewares/validateAdopterName";
 import validateAdopterEmail from "../middlewares/validateAdopterEmail";
 import validateAdopterPhone from "../middlewares/validateAdopterPhone";
+import checkAdopterId from "../middlewares/checkAdopterId";
 
 const adoptersRoutes = Router();
 const prisma = new PrismaClient();
@@ -46,5 +47,22 @@ adoptersRoutes.post(
     }
   }
 );
+
+adoptersRoutes.get("/:id", checkAdopterId, async (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    const adopter = await prisma.adopter.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    res.json(adopter);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return res.status(500).send({ message: "Internal server error" });
+  }
+});
 
 export default adoptersRoutes;
