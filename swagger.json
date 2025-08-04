@@ -1,0 +1,107 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Pet-Adoption API",
+        "description": "API responsible for managing pet adoptions",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/pets": {
+            "get": {
+                "tags": ["Pet"],
+                "summary": "Obtain all pets, optionally filtering by type, size and availability",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": ["dog", "cat", "other"]
+                        },
+                        "description": "Pet type"
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": ["small", "medium", "large"]
+                        },
+                        "description": "Pet size"
+                    },
+                    {
+                        "name": "available",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "description": "Pet availability"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get a list of pets",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Pet"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Pet": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "Pet's ID"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Pet's name"
+                    },
+                    "age": {
+                        "type": "integer",
+                        "description": "Pet's age"
+                    },
+                    "type": {
+                        "type": {
+                            "enum": ["dog", "cat", "other"]
+                        },
+                        "description": "Pet's type"
+                    },
+                    "breed": {
+                        "type": "string",
+                        "description": "Pet's breed"
+                    },
+                    "size": {
+                        "type": {
+                            "enum": ["small", "medium", "large"]
+                        },
+                        "description": "Pet's size"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Pet's description"
+                    },
+                    "available": {
+                        "type": "boolean",
+                        "description": "Pet's availability"
+                    }
+                }
+            }
+        }
+    }
+}
