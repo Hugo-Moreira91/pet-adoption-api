@@ -54,6 +54,12 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Invalid query parameters"
+                    },
+                    "500": {
+                        "description": "Internal server error"
                     }
                 }
             }
