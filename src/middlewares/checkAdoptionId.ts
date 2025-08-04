@@ -6,13 +6,13 @@ const prisma = new PrismaClient();
 async function checkAdoptionId(req: Request, res: Response, next: NextFunction) {
   const id = Number(req.params.id);
 
-  const adopter = await prisma.adoption.findUnique({
+  const isAdoptionExist = await prisma.adoption.findUnique({
     where: {
       id,
     },
   });
 
-  if (!adopter) {
+  if (!isAdoptionExist) {
     return res.status(404).send({ message: "Adoption not found" });
   }
 

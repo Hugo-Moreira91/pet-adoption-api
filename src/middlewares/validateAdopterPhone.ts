@@ -5,8 +5,7 @@ function validateAdopterPhone(req: Request, res: Response, next: NextFunction) {
 
   const regexPhone = /^\d{11}$/;
 
-  const isValidPhone =
-    typeof phone === "string" && phone.length === 11 && regexPhone.test(phone);
+  const isValidPhone = typeof phone === "string" && regexPhone.test(phone);
 
   if (!phone || !isValidPhone) {
     return res.status(400).send({

@@ -11,7 +11,7 @@ async function validateAdopterEmail(req: Request, res: Response, next: NextFunct
   const isEmailValid = typeof email === "string" && regexEmail.test(email);
 
   if (!email || !isEmailValid) {
-    return res.status(400).send({ message: "E-mail is required; E-mail is not valid" });
+    return res.status(400).send({ message: "E-mail not entered or is not valid" });
   }
 
   const normalizedEmail = email.toLowerCase();
