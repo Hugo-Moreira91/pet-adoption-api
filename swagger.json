@@ -193,6 +193,7 @@
                 "summary": "Obtain all adopters",
                 "responses": {
                     "200": {
+                        "description": "Get a list of adopters",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -339,6 +340,121 @@
                     }
                 }
             }
+        },
+        "/adoptions": {
+            "get": {
+                "tags": ["Adoption"],
+                "summary": "Obtain all adoptions",
+                "responses": {
+                    "200": {
+                        "description": "Get a list of adoptions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/Adoption"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Adoption"],
+                "summary": "Register a new adoption",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdoptionInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registered adoption successfully"
+                    },
+                    "400": {
+                        "description": "Adoption date is required"
+                    },
+                    "404": {
+                        "description": "Adopter not found"
+                    },
+                    "409": {
+                        "description": "Pet is not available for adoption"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/adoptions/{id}": {
+            "get": {
+                "tags": ["Adoption"],
+                "summary": "Obtain a specific adoption",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Adoption's ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieve a specific adoption successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Adoption"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Adoption not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Adoption"],
+                "summary": "Delete a specific adoption",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Adoption's ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Removed adoption successfully"
+                    },
+                    "404": {
+                        "description": "Adoption not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -456,6 +572,69 @@
                     "phone": {
                         "type": "integer",
                         "description": "Adopter's phone"
+                    }
+                }
+            },
+            "Adoption": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "Adoption's ID"
+                    },
+                    "pet_id": {
+                        "type": "integer",
+                        "description": "Pet's ID"
+                    },
+                    "adopter_id": {
+                        "type": "integer",
+                        "description": "Adopter's ID"
+                    },
+                    "adoption_date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Adoption's date"
+                    },
+                    "pet": {
+                        "description": "Pet's data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Pet"
+                                }
+                            }
+                        }
+                    },
+                    "adopter": {
+                        "description": "Adopter's data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Adopter"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "AdoptionInput": {
+                "type": "object",
+                "required": ["pet_id", "adopter_id", "adoption_date"],
+                "properties": {
+                    "pet_id": {
+                        "type": "integer",
+                        "description": "Pet's ID"
+                    },
+                    "adopter_id": {
+                        "type": "integer",
+                        "description": "Adopter's ID"
+                    },
+                    "adoption_date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Adoption's date"
                     }
                 }
             }
