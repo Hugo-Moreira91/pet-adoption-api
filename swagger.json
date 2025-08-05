@@ -62,6 +62,129 @@
                         "description": "Internal server error"
                     }
                 }
+            },
+            "post": {
+                "tags": ["Pet"],
+                "summary": "Register a new pet",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PetInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registered pet successfully"
+                    },
+                    "400": {
+                        "description": "Invalid body parameters"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/pets/{id}": {
+            "get": {
+                "tags": ["Pet"],
+                "summary": "Obtain a specific pet",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Pet's ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieve a specific pet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Pet"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Pet"],
+                "summary": "Update a pet",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Pet's ID"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/PetInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated pet successfully"
+                    },
+                    "400": {
+                        "description": "Invalid data for update"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Pet"],
+                "summary": "Delete a specific pet",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Pet's ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Removed pet successfully"
+                    },
+                    "404": {
+                        "description": "Pet not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
             }
         }
     },
@@ -99,6 +222,42 @@
                         "description": "Pet's size"
                     },
                     "description": {
+                        "type": "string",
+                        "description": "Pet's description"
+                    },
+                    "available": {
+                        "type": "boolean",
+                        "description": "Pet's availability"
+                    }
+                }
+            },
+            "PetInput": {
+                "type": "object",
+                "required": ["name", "type", "size"],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Pet's name"
+                    },
+                    "age": {
+                        "type": "integer",
+                        "description": "Pet's age"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": ["dog", "cat", "other"],
+                        "description": "Pet's type"
+                    },
+                    "breed": {
+                        "type": "string",
+                        "description": "Pet's breed"
+                    },
+                    "size": {
+                        "type": "string",
+                        "enum": ["small", "medium", "large"],
+                        "description": "Pet's size"
+                    },
+                    "pet_description": {
                         "type": "string",
                         "description": "Pet's description"
                     },
