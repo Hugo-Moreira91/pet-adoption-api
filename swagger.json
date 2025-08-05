@@ -106,7 +106,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Retrieve a specific pet",
+                        "description": "Retrieve a specific pet successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -180,6 +180,159 @@
                     },
                     "404": {
                         "description": "Pet not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/adopters": {
+            "get": {
+                "tags": ["Adopter"],
+                "summary": "Obtain all adopters",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/Adopter"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Adopter"],
+                "summary": "Register a new adopter",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdopterInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registered adopter successfully"
+                    },
+                    "400": {
+                        "description": "Invalid body parameters"
+                    },
+                    "409": {
+                        "description": "E-mail already registered"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/adopters/{id}": {
+            "get": {
+                "tags": ["Adopter"],
+                "summary": "Obtain a specific adopter",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Adopter's ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieve a specific adopter successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Adopter"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Adopter not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Adopter"],
+                "summary": "Update a adopter",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Adopter's ID"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/AdopterInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated adopter successfully"
+                    },
+                    "400": {
+                        "description": "Invalid body parameters"
+                    },
+                    "404": {
+                        "description": "Adopter not found"
+                    },
+                    "409": {
+                        "description": "E-mail already registered"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Adopter"],
+                "summary": "Delete a specific pet",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Adopter's ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Removed adopter successfully"
+                    },
+                    "404": {
+                        "description": "Adopter not found"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -264,6 +417,45 @@
                     "available": {
                         "type": "boolean",
                         "description": "Pet's availability"
+                    }
+                }
+            },
+            "Adopter": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "Adopter's ID"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Adopter's name"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Adopter's e-mail"
+                    },
+                    "phone": {
+                        "type": "integer",
+                        "description": "Adopter's phone"
+                    }
+                }
+            },
+            "AdopterInput": {
+                "type": "object",
+                "required": ["name", "email", "phone"],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Adopter's name"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Adopter's e-mail"
+                    },
+                    "phone": {
+                        "type": "integer",
+                        "description": "Adopter's phone"
                     }
                 }
             }
